@@ -1,4 +1,4 @@
-# SuperMEET
+# SupaMeet
 making a meeting intelligent assistence system from scratch. why? cuz im bored.
 
 Alr'ight everyone phase 1 of the development in the go.  no better, github is punishing me
