@@ -25,3 +25,6 @@ npm install
 npm test
 ```
 
+## Manual API Testing
+
+All endpoints were tested manually via Swagger UI at `/api/docs`.
