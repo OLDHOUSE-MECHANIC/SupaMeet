@@ -37,7 +37,7 @@ app.get('/api/evaluation', (req, res) => {
     candidateName: 'OM DUBEY',         
     email: 'FILES.OMDUBEY@GMAIL.COM',                 
     repositoryUrl: 'https://github.com/OLDHOUSE-MECHANIC/SupaMeet',   
-    deployedUrl: 'YOUR_DEPLOYED_URL',    // TODO: replace
+    deployedUrl: 'https://supameet-eptu.onrender.com',    // TODO: replace
     externalIntegration: 'Resend Email API',
     features: [
       'JWT Authentication',
