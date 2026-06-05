@@ -1,11 +1,41 @@
 
-***Stage 1: Foundation***   
-Started with Express over Fastify or Hapi — it's the most minimal and I know exactly what I'm getting. No magic, just middleware and routes. 
-Perfect for keeping things readable. Went with dotenv for env management but wrapped it in a src/config/env.js file. That way I'm never scattering process.env.
-WHATEVER all over the codebase — one place, one source of truth, fails loudly if something's missing.Prisma was an easy call for the ORM. 
-The schema file is clean, migrations are straightforward, and it basically documents your database design for free. Didn't even consider writing raw SQL for this.
-For validation I picked Zod. It's TypeScript-friendly but works just as well in plain JS, and it lets me define schemas that double as documentation. 
-express-validator felt too verbose for what we need here.Winston for logging because it supports structured JSON logs out of the box. 
-I needed timestamp, traceId, method, path, and status in every log line — Winston makes that trivial to configure. The traceId middleware was a 
-deliberate early decision. Attaching a UUID to every request from the very first middleware means it flows through logs and responses automatically. 
-Debugging without this is a nightmare. helmet and cors went on as defaults. Security basics, no reason not to.
+# DECISIONS.md
+###### Technical decisions log for SupaMeet.
+
+## Runtime: Node.js + Express
+
+Went with Express over Fastify or Hapi. It's the most minimal option — no magic, just middleware and routes. The ecosystem is vast and every dependency we needed had solid Express support. Predictable, readable, easy to reason about.
+
+## Database: SQLite via Prisma
+
+PostgreSQL was the first instinct but SQLite is the smarter call here. Zero external DB dependency, single file, Prisma supports it identically. Migrations work the same way. Deployment to Render with a persistent disk is straightforward. For an evaluation project this is clean and reliable — one less moving part.
+
+Prisma specifically because the schema file is self-documenting. Models, relations, types — all in one place. It also made the JSON field workaround (for arrays in SQLite) explicit and manageable.
+
+## Authentication: JWT
+
+Assignment literally lists it as an example. Stateless, simple, works perfectly for a REST API. Wrapped in a single middleware that sits in front of protected routes. No sessions, no cookies, no complexity.
+
+## Validation: Zod
+
+Picked Zod over express-validator because schema definitions are cleaner and co-locate naturally with controllers. Errors are structured and easy to extract a message from. TypeScript-friendly as a bonus even though we're in plain JS.
+
+## LLM Provider: Groq
+
+Free tier, fast inference, OpenAI-compatible API. Easy to swap if needed. llama-3.3-70b-versatile is capable enough for meeting summarization and citation-aware extraction. Low temperature (0.1) set on all calls to minimize hallucination.
+
+## External Integration: Resend
+
+Cleanest email API available. Single function call, free tier, reliable delivery. Email reminders feel the most production-appropriate for this use case compared to webhooks or bots.
+
+## Real-time Transcript Architecture
+
+Chose a live chunking approach over a single end-of-meeting transcript submission. Every 15 lines the buffer flushes — raw lines archived, summary written to context log with phase time ranges and action/decision signals. The AI always reads context + current live chunk, never an unbounded raw transcript. This prevents token overflow on long meetings while maintaining full context awareness and citation traceability.
+
+## Logging: Winston
+
+Structured JSON logs out of the box. Every log line carries timestamp and traceId. Simple to configure, widely supported on deployment platforms.
+
+## Reminder Deduplication
+
+Reminders only fire if no reminder has been sent in the last 24 hours for that action item. Prevents spam without needing a complex state machine.
