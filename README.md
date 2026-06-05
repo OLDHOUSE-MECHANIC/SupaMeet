@@ -1,7 +1,13 @@
-# SupaMeet
+<img width="320" height="94" alt="image" src="https://github.com/user-attachments/assets/5d522969-5126-407a-b0e9-d0a9476261a6" />
+
+
 AI-powered meeting intelligence service. Real-time transcript chunking, phased context logging, cited AI analysis, action item tracking, and automated email reminders.  
 
+## Live-Demo 
+try now at: https://supameet-eptu.onrender.com/api/docs/  
 
+---
+  
 ## Setup
 
 ### Prerequisites
