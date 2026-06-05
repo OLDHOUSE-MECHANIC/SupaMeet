@@ -1,0 +1,99 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  name      String
+  createdAt DateTime @default(now())
+
+  meetings  Meeting[]
+}
+
+model Meeting {
+  id          String   @id @default(uuid())
+  title       String
+  participants String  // JSON array of emails
+  meetingDate DateTime
+  status      String   @default("ACTIVE") // ACTIVE | ENDED
+  createdAt   DateTime @default(now())
+
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+
+  chunks      TranscriptChunk[]
+  contextLogs ContextLog[]
+  analysis    Analysis?
+  actionItems ActionItem[]
+}
+
+model TranscriptChunk {
+  id            String   @id @default(uuid())
+  chunkIndex    Int
+  rawLines      String   // JSON array of {timestamp, speaker, text}
+  summary       String
+  phaseTimeStart String
+  phaseTimeEnd   String
+  createdAt     DateTime @default(now())
+
+  meetingId     String
+  meeting       Meeting  @relation(fields: [meetingId], references: [id])
+}
+
+model ContextLog {
+  id            String   @id @default(uuid())
+  phaseIndex    Int
+  phaseTimeStart String
+  phaseTimeEnd   String
+  summary       String
+  actionSignals String   // JSON array of detected action signals
+  decisionSignals String // JSON array of detected decision signals
+  createdAt     DateTime @default(now())
+
+  meetingId     String
+  meeting       Meeting  @relation(fields: [meetingId], references: [id])
+}
+
+model Analysis {
+  id              String   @id @default(uuid())
+  summary         String   // JSON array of {text, citations}
+  decisions       String   // JSON array of {text, citations}
+  followUps       String   // JSON array of {text, citations}
+  createdAt       DateTime @default(now())
+
+  meetingId       String   @unique
+  meeting         Meeting  @relation(fields: [meetingId], references: [id])
+}
+
+model ActionItem {
+  id          String   @id @default(uuid())
+  task        String
+  assignee    String
+  dueDate     DateTime?
+  status      String   @default("PENDING") // PENDING | IN_PROGRESS | COMPLETED
+  citations   String   // JSON array of citations
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  meetingId   String
+  meeting     Meeting  @relation(fields: [meetingId], references: [id])
+
+  reminders   ReminderLog[]
+}
+
+model ReminderLog {
+  id           String   @id @default(uuid())
+  sentAt       DateTime @default(now())
+  status       String   @default("SENT") // SENT | FAILED
+  errorMessage String?
+
+  actionItemId String
+  actionItem   ActionItem @relation(fields: [actionItemId], references: [id])
+}
