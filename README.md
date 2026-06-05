@@ -1,14 +1,28 @@
 # SupaMeet
-making a meeting intelligent assistence system from scratch. why? cuz im bored.
-
-Alr'ight everyone phase 1 of the development in the go.  no better, github is punishing me
-lets envision a working project structured.  
-
-PLEASE VISIT THE DECISION DOCUMENTATION TO REACH THE REASONING FOR EVERYTHING I INCLUDED AND ORDERED IN THE FOLLOWING MANNER.
+AI-powered meeting intelligence service. Real-time transcript chunking, phased context logging, cited AI analysis, action item tracking, and automated email reminders.  
 
 
+## Setup
+
+### Prequisites
+
+### Install
+
+### Environment
+
+### Database
+
+### Run
+
+### Environment Variables
+
+---
+
+## API Usage Examples
 
 
+## Project-Structure 
+###### (idk, if thats ur thing: just in case!)
 ```
 SupaMeet backend/
 |
