@@ -11,15 +11,15 @@ AI-powered meeting intelligence service. Real-time transcript chunking, phased c
 
 ### Install
 ```bash
-git clone https://github.com/yourusername/supameet-backend
-cd supameet-backend
+git clone https://github.com/OLDHOUSE-MECHANIC/SupaMeet
+cd SupaMeet
 npm install
 ```
 
 ### Environment
 ```bash
 cp .env.example .env
-# Fill in your keys in .env
+# [....... Fill in your keys in .env]
 ```
 
 ### Database
