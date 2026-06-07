@@ -5,9 +5,9 @@ const options = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'SuperMEET API',
+      title: 'SupaMeet API',
       version: '1.0.0',
-      description: 'AI-powered meeting intelligence service',
+      description: 'an intelligent meeting service, doped with the superpowers of AI',
     },
     servers: [{ url: '/api' }],
     components: {
